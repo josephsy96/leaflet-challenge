@@ -30,22 +30,27 @@ function earthquake_popup(e_data) {
 
 function render_map(earth) {
 
-    let light_map = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
+    let dark_map = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
         maxZoom: 18,
-        id: "mapbox.light",
+        id: "mapbox.dark",
         accessToken: API_KEY
     });
 
     let sat_map = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-        maxZoom: 18,
+        maxZoom: 15,
         id: "mapbox.streets",
         accessToken: API_KEY
     });
 
+    let boundaries = [
+        [85.051129, -200], // East coordinates
+        [-85.051129,190] // Northeast coordinates
+        ];
+
     let base = {
-        "Light Map": light_map,
+        "Dark Map": dark_map,
         "Streets Map": sat_map
     };
 
@@ -55,12 +60,13 @@ function render_map(earth) {
 
     //set map
     let earth_map = L.map("map", {
-        center: [37.9643, -91.8318],
+        center: [40, -91.8318],
         zoom: 5,
-        layers: [light_map, earth]
+        layers: [dark_map, earth],
+        maxBounds: boundaries
     });
 
     L.control.layers(base, overlay_map, {
-        collapsed: false
+        collapsed: true
     }).addTo(earth_map);
 }
