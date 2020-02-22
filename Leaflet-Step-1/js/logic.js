@@ -16,6 +16,30 @@ function earthquake_popup(e_data) {
         return magnitude * 50000;
     }
 
+    function color_size(mag_data) {
+        let color = "";
+
+        if (mag_data >= 5) {
+            color = "#A6145D";
+        }
+        else if (mag_data < 5 && mag_data >= 4) {
+            color = "#A614A6";
+        }
+        else if (mag_data < 4 && mag_data >= 3) {
+            color = "#5D14A6";
+        }
+        else if (mag_data < 3 && mag_data >= 2) {
+            color = "#5D14A6";
+        }
+        else if (mag_data < 2 && mag_data >= 1) {
+            color = "#1414A6";
+        }
+        else {
+            color = "#14A6A6";
+        }
+        return color;
+    }
+
     function each_feature(feature,layer) {
         // console.log(feature);
         // console.log(layer.feature.properties);
@@ -31,7 +55,7 @@ function earthquake_popup(e_data) {
             return L.circle(latlng,{
                     fillOpacity: 0.60,
                     color: "white",
-                    fillColor: "cyan",
+                    fillColor: color_size(feature.properties.mag),
                     radius: magnitude_size(feature.properties.mag)
                 });
         },
