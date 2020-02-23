@@ -1,6 +1,8 @@
 
 //API URL
 let earthquake_url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+//plates geo json
+let plates_geo_json = "Leaflet-Step-2/PB2002_plates.geojson";
 
 //Perform API request for earthquake data
 d3.json(earthquake_url, function(data) {
@@ -8,14 +10,17 @@ d3.json(earthquake_url, function(data) {
     console.log(data.features);
 });
 
+
 //Function to create popup data
 function earthquake_popup(e_data) {
     console.log(e_data[0]);
 
+    //sets the circle size, corresponding to the earthquakes magnitude
     function magnitude_size(magnitude) {
-        return magnitude * 50000;
+        return magnitude * 45000;
     }
 
+    //function to set the color corresponding to the earthquake magnitude
     function color_size(mag_data) {
         let color = "";
 
@@ -62,13 +67,20 @@ function earthquake_popup(e_data) {
         onEachFeature: each_feature
     });
 
+
     //Renders map with data
     render_map(earth_geo);
 }
 
+
+
 //Function to create the map
 
 function render_map(earth) {
+
+    // let plates = d3.json(plates_geo_json, function(data) {
+    //     L.geoJson(data);
+    // });
 
     let dark_map = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
         attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -96,7 +108,8 @@ function render_map(earth) {
     };
 
     let overlay_map = {
-        Earthquakes: earth
+        "Earthquakes": earth,
+        "Fault Lines": plates
     }
 
     //set map
@@ -112,17 +125,18 @@ function render_map(earth) {
     }).addTo(earth_map);
 
 
-    function legend_function(earth_data) {
-    //create legend for map
-    let info_legend = L.control({
-        position: "bottomright"
-    });
+    // // function legend_function(earth_legends) {
+    // //create legend for map
+    // let info_legend = L.control({
+    //     position: "bottomright"
+    // });
 
-    info_legend.onAdd = function() {
-        let div = L.DomUtil.create("div", "legend");
-        return div;
-    };
+    // info_legend.onAdd = function() {
+    //     let div = L.DomUtil.create("div", "legend");
+    //     div.innerHTML
+    //     return div;
+    // };
 
-    info_legend.addTo(earth_map);
-    }
+    // info_legend.addTo(earth_map);
+    
 }
