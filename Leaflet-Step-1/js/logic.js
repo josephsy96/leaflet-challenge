@@ -109,7 +109,7 @@ function render_map(earth) {
 
     let overlay_map = {
         "Earthquakes": earth,
-        "Fault Lines": plates
+        // "Fault Lines": plates
     }
 
     //set map
